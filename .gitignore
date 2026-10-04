@@ -1,0 +1,45 @@
+# ==========================================
+# Official Terraform .gitignore Template
+# ==========================================
+
+# Local .terraform directory (contains downloaded plugins, providers, and modules)
+**/.terraform/*
+
+# .tfstate files (Contains plain-text secrets and state metadata)
+# Note: You should store production state files in a secure remote backend (e.g., AWS S3, HashiCorp Cloud)
+*.tfstate
+*.tfstate.*
+
+# Crash log files (Generated only if Terraform crashes)
+crash.log
+crash.*.log
+
+# Exclude all variable files that may contain sensitive data / passwords / API keys
+*.tfvars
+*.tfvars.json
+
+# Ignore automatically generated auto-variables
+*.auto.tfvars
+*.auto.tfvars.json
+
+# Ignore override files (Typically used for temporary local overrides)
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Include override files you DO wish to add to version control (uncomment if needed)
+# !example_override.tf
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+# Ignore transient lock info files created during a 'terraform apply'
+.terraform.tfstate.lock.info
+
+# Ignore speculative plan files generated via 'terraform plan -out=tfplan'
+*tfplan*
+
+# Ignore optional graph output files
+*.dot
