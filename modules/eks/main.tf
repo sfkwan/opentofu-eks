@@ -12,7 +12,8 @@ module "eks" {
   subnet_ids                 = var.private_subnet_ids
   create_security_group      = false
   create_node_security_group = false
-  security_group_id          = var.cluster_sg_id
+  # security_group_id          = var.cluster_sg_id
+  enable_irsa = true
 
   enable_cluster_creator_admin_permissions = true
 
