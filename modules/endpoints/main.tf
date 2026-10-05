@@ -4,7 +4,9 @@ locals {
     "ecr.dkr",
     "logs",
     "monitoring",
-    "sts"
+    "sts",
+    "ec2",
+    "elasticloadbalancing",
   ]
 }
 

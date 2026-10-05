@@ -6,16 +6,16 @@ module "rds" {
 
   identifier = "application-db"
 
-  engine = "postgres"
-  engine_version = "18.6"
+  engine               = "postgres"
+  engine_version       = "18.6"
   family               = "postgres18" # DB parameter group
   major_engine_version = "18"         # DB option group
-  instance_class = var.db_instance_class
+  instance_class       = var.db_instance_class
 
   allocated_storage = 10
 
-  db_name = var.db_name
-  username = var.username
+  db_name     = var.db_name
+  username    = var.username
   password_wo = var.password
 
   multi_az = true
