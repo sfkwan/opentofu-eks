@@ -6,10 +6,10 @@ resource "aws_s3_bucket" "app_storage" {
 
 # IAM Role mapping for Service Accounts (IRSA)
 module "s3_irsa_role" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 5.0"
-
-  role_name = "eks-s3-reader-irsa-role"
+  source           = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version          = "~> 5.0"
+  role_name        = "eks-s3-reader-irsa-role"
+  role_description = "Allows Fargate pods to read to S3"
 
   oidc_providers = {
     main = {
@@ -17,6 +17,8 @@ module "s3_irsa_role" {
       namespace_service_accounts = ["${var.k8s_namespace}:${var.k8s_service_account}"]
     }
   }
+
+
 
 }
 
@@ -34,10 +36,7 @@ resource "aws_iam_role_policy" "s3_read_access" {
           "s3:GetObject",
           "s3:ListBucket"
         ]
-        Resource = [
-          aws_s3_bucket.app_storage.arn,
-          "${aws_s3_bucket.app_storage.arn}/*"
-        ]
+        Resource = ["*"]
       }
       # Tip: If your pods require write capabilities, append s3:PutObject here
     ]
