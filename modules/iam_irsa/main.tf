@@ -1,0 +1,45 @@
+# Secure data bucket for workloads
+resource "aws_s3_bucket" "app_storage" {
+  bucket        = "app-data-storage-${var.environment}-bucket"
+  force_destroy = true
+}
+
+# IAM Role mapping for Service Accounts (IRSA)
+module "s3_irsa_role" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "~> 5.0"
+
+  role_name = "eks-s3-reader-irsa-role"
+
+  oidc_providers = {
+    main = {
+      provider_arn               = var.cluster_oidc_arn
+      namespace_service_accounts = ["${var.k8s_namespace}:${var.k8s_service_account}"]
+    }
+  }
+
+}
+
+# Attach explicit least-privilege read policy to the identity token role
+resource "aws_iam_role_policy" "s3_read_access" {
+  name = "EKSFargateS3ReadAccess"
+  role = module.s3_irsa_role.iam_role_name
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:ListBucket"
+        ]
+        Resource = [
+          aws_s3_bucket.app_storage.arn,
+          "${aws_s3_bucket.app_storage.arn}/*"
+        ]
+      }
+      # Tip: If your pods require write capabilities, append s3:PutObject here
+    ]
+  })
+}

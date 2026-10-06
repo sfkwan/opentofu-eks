@@ -39,6 +39,15 @@ module "eks" {
   cluster_sg_id = module.security_groups.eks_sg_id
 }
 
+module "iam_irsa" {
+  source = "./modules/iam_irsa"
+
+  environment         = var.environment
+  cluster_oidc_arn    = module.eks.oidc_provider_arn
+  k8s_namespace       = var.k8s_namespace
+  k8s_service_account = var.k8s_service_account
+}
+
 # module "rds" {
 #   source = "./modules/rds"
 

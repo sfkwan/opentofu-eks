@@ -67,6 +67,16 @@ variable "eks_cluster_name" {
   default = "prkwan-eks-cluster"
 }
 
+variable "k8s_namespace" {
+  type    = string
+  default = "default"
+}
+
+variable "k8s_service_account" {
+  type    = string
+  default = "s3-service-account"
+}
+
 variable "db_name" {
   type    = string
   default = "prkwan-eks-db"
