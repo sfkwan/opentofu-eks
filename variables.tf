@@ -26,15 +26,6 @@ variable "vpc_cidr" {
   default = "10.0.0.0/16"
 }
 
-variable "azs" {
-  type = list(string)
-  default = [
-    "us-east-1a",
-    "us-east-1b",
-    "us-east-1c"
-  ]
-}
-
 variable "public_subnet_cidrs" {
   type = list(string)
   default = [
@@ -69,7 +60,7 @@ variable "eks_cluster_name" {
 
 variable "k8s_namespace" {
   type    = string
-  default = "default"
+  default = "my-app-ns"
 }
 
 variable "k8s_service_account" {

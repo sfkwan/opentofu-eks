@@ -10,10 +10,6 @@ output "database_subnet_ids" {
   value = module.vpc.database_subnet_ids
 }
 
-output "eks_sg_id" {
-  value = module.security_groups.eks_sg_id
-}
-
 output "rds_sg_id" {
   value = module.security_groups.rds_sg_id
 }
@@ -48,4 +44,8 @@ output "oidc_provider_arn" {
 
 output "iam_irsa" {
   value = module.iam_irsa.iam_role_arn
+}
+
+output "k8s_namespace" {
+  value = module.kubernetes_ns.k8s_namespace
 }

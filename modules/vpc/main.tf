@@ -1,3 +1,13 @@
+# 2. Declare the data source to fetch available AZs
+data "aws_availability_zones" "available" {
+  state = "available"
+
+  # Optional: Filter out Local Zones or Wavelength Zones if you only want standard AZs
+  filter {
+    name   = "opt-in-status"
+    values = ["opt-in-not-required"]
+  }
+}
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 5.0"
@@ -6,7 +16,7 @@ module "vpc" {
 
   cidr = var.vpc_cidr
 
-  azs = var.azs
+  azs = data.aws_availability_zones.available.names
 
   public_subnets  = var.public_subnet_cidrs
   private_subnets = var.private_subnet_cidrs

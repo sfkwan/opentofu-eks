@@ -34,7 +34,9 @@ resource "aws_iam_role_policy" "s3_read_access" {
         Effect = "Allow"
         Action = [
           "s3:GetObject",
-          "s3:ListBucket"
+          "s3:ListBucket",
+          "s3:ListAllMyBuckets",
+          "s3:GetBucketLocation"
         ]
         Resource = ["*"]
       }

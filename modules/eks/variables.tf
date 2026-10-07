@@ -13,8 +13,5 @@ variable "private_subnet_ids" {
   type = set(string)
 }
 
-variable "cluster_sg_id" {
-  description = "The security group ID of the EKS cluster"
-  type        = string
-}
+
 

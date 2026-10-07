@@ -3,7 +3,6 @@ module "vpc" {
 
   environment = var.environment
   vpc_cidr    = var.vpc_cidr
-  azs         = var.azs
 
   public_subnet_cidrs   = var.public_subnet_cidrs
   private_subnet_cidrs  = var.private_subnet_cidrs
@@ -12,11 +11,25 @@ module "vpc" {
   project = var.project
 }
 
+module "eks" {
+  source = "./modules/eks"
+
+  cluster_name       = var.eks_cluster_name
+  private_subnet_ids = module.vpc.private_subnet_ids
+
+  vpc_id = module.vpc.vpc_id
+}
+
 module "security_groups" {
   source = "./modules/security_groups"
 
   vpc_id                = module.vpc.vpc_id
   cluster_primary_sg_id = module.eks.cluster_primary_sg_id
+}
+
+module "kubernetes_ns" {
+  source        = "./modules/k8s_ns"
+  k8s_namespace = var.k8s_namespace
 }
 
 module "endpoints" {
@@ -29,15 +42,7 @@ module "endpoints" {
   private_route_table_ids = module.vpc.private_route_table_ids
 }
 
-module "eks" {
-  source = "./modules/eks"
 
-  cluster_name       = var.eks_cluster_name
-  private_subnet_ids = module.vpc.private_subnet_ids
-
-  vpc_id        = module.vpc.vpc_id
-  cluster_sg_id = module.security_groups.eks_sg_id
-}
 
 module "iam_irsa" {
   source = "./modules/iam_irsa"
