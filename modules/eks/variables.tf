@@ -3,6 +3,10 @@ variable "cluster_name" {
 
 }
 
+variable "kubernetes_version" {
+  type = string
+}
+
 variable "vpc_id" {
   description = "The ID of the VPC where the EKS cluster will be created"
   type        = string

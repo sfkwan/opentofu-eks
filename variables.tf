@@ -44,7 +44,7 @@ variable "private_subnet_cidrs" {
   ]
 }
 
-variable "database_subnet_cidrs" {
+variable "db_subnet_cidrs" {
   type = list(string)
   default = [
     "10.0.21.0/24",
@@ -58,6 +58,10 @@ variable "eks_cluster_name" {
   default = "prkwan-eks-cluster"
 }
 
+variable "k8s_version" {
+  type    = string
+  default = "1.37"
+}
 variable "k8s_namespace" {
   type    = string
   default = "my-app-ns"
@@ -87,4 +91,10 @@ variable "db_password" {
 variable "db_instance_class" {
   type    = string
   default = "db.t3.micro"
+}
+
+variable "db_port" {
+  description = "DB port"
+  type        = number
+  default     = 5432
 }

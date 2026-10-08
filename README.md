@@ -57,3 +57,33 @@ aws ecr get-login-password --region us-east-1 | docker login --username AWS --pa
 docker push 471112874456.dkr.ecr.us-east-1.amazonaws.com/prkwan/nginx:latest
 
 ```
+
+```
+
+aws ecr create-repository \
+  --repository-name helm/aws-load-balancer-controller
+
+aws ecr get-login-password \
+| helm registry login \
+  --username AWS \
+  --password-stdin \
+  471112874456.dkr.ecr.us-east-1.amazonaws.com
+
+helm push \
+  aws-load-balancer-controller-1.13.0.tgz \
+  oci://471112874456.dkr.ecr.us-east-1.amazonaws.com/helm
+
+```
+
+## AWS load balancer controller docker
+
+```
+docker pull public.ecr.aws/eks/aws-load-balancer-controller:v3.6.0
+
+docker tag \
+  public.ecr.aws/eks/aws-load-balancer-controller:v3.6.0 \
+  471112874456.dkr.ecr.us-east-1.amazonaws.com/prkwan/aws-load-balancer-controller:v3.6.0
+
+docker push \
+  471112874456.dkr.ecr.us-east-1.amazonaws.com/prkwan/aws-load-balancer-controller:v3.6.0
+```

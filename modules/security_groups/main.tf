@@ -15,56 +15,80 @@ resource "aws_security_group" "endpoint" {
   }
 }
 
-resource "aws_security_group_rule" "rds_from_eks" {
-  type = "ingress"
+resource "aws_security_group" "vpc_link" {
 
-  from_port = 5432
-  to_port   = 5432
-  protocol  = "tcp"
-
-  security_group_id        = aws_security_group.rds.id
-  source_security_group_id = var.cluster_primary_sg_id
-}
-
-resource "aws_security_group_rule" "endpoint_from_eks" {
-  type = "ingress"
-
-  from_port = 443
-  to_port   = 443
-  protocol  = "tcp"
-
-  security_group_id        = aws_security_group.endpoint.id
-  source_security_group_id = var.cluster_primary_sg_id
-}
-
-resource "aws_security_group" "alb" {
-  name        = "alb-sg"
-  description = "ALB Security Group"
-  vpc_id      = var.vpc_id
+  name   = "vpc-link-sg"
+  vpc_id = var.vpc_id
 
   tags = {
-    Name = "alb-sg"
+    Name = "vpc-link-sg"
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "alb_http" {
+# resource "aws_vpc_security_group_ingress_rule" "alb_https" {
 
-  security_group_id = aws_security_group.alb.id
+#   security_group_id = aws_security_group.alb.id
 
-  cidr_ipv4 = "0.0.0.0/0"
+#   referenced_security_group_id = aws_security_group.vpc_link.id
 
-  from_port   = 80
-  to_port     = 80
+#   from_port = 443
+#   to_port   = 443
+
+#   ip_protocol = "tcp"
+# }
+
+
+resource "aws_vpc_security_group_ingress_rule" "rds_from_eks" {
+
+  from_port = var.db_port
+  to_port   = var.db_port
+
+  security_group_id            = aws_security_group.rds.id
+  referenced_security_group_id = var.cluster_primary_sg_id
+
   ip_protocol = "tcp"
 }
 
-resource "aws_vpc_security_group_ingress_rule" "alb_https" {
+resource "aws_vpc_security_group_ingress_rule" "endpoint_from_eks" {
 
-  security_group_id = aws_security_group.alb.id
+  from_port = 443
+  to_port   = 443
 
-  cidr_ipv4 = "0.0.0.0/0"
+  security_group_id            = aws_security_group.endpoint.id
+  referenced_security_group_id = var.cluster_primary_sg_id
 
-  from_port   = 443
-  to_port     = 443
   ip_protocol = "tcp"
+
 }
+
+# resource "aws_security_group" "alb" {
+#   name        = "alb-sg"
+#   description = "ALB Security Group"
+#   vpc_id      = var.vpc_id
+
+#   tags = {
+#     Name = "alb-sg"
+#   }
+# }
+
+# resource "aws_vpc_security_group_ingress_rule" "alb_http" {
+
+#   security_group_id = aws_security_group.alb.id
+
+#   cidr_ipv4 = "0.0.0.0/0"
+
+#   from_port   = 80
+#   to_port     = 80
+#   ip_protocol = "tcp"
+# }
+
+# resource "aws_vpc_security_group_ingress_rule" "alb_https" {
+
+#   security_group_id = aws_security_group.alb.id
+
+#   cidr_ipv4 = "0.0.0.0/0"
+
+#   from_port   = 443
+#   to_port     = 443
+#   ip_protocol = "tcp"
+# }

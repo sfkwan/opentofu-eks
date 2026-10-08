@@ -6,7 +6,7 @@ module "vpc" {
 
   public_subnet_cidrs   = var.public_subnet_cidrs
   private_subnet_cidrs  = var.private_subnet_cidrs
-  database_subnet_cidrs = var.database_subnet_cidrs
+  database_subnet_cidrs = var.db_subnet_cidrs
 
   project = var.project
 }
@@ -15,9 +15,11 @@ module "eks" {
   source = "./modules/eks"
 
   cluster_name       = var.eks_cluster_name
+  kubernetes_version = var.k8s_version
+
+  vpc_id             = module.vpc.vpc_id
   private_subnet_ids = module.vpc.private_subnet_ids
 
-  vpc_id = module.vpc.vpc_id
 }
 
 module "security_groups" {
@@ -25,6 +27,7 @@ module "security_groups" {
 
   vpc_id                = module.vpc.vpc_id
   cluster_primary_sg_id = module.eks.cluster_primary_sg_id
+  db_port               = var.db_port
 }
 
 module "kubernetes_ns" {
@@ -51,6 +54,16 @@ module "iam_irsa" {
   cluster_oidc_arn    = module.eks.oidc_provider_arn
   k8s_namespace       = var.k8s_namespace
   k8s_service_account = var.k8s_service_account
+}
+
+module "alb_controller" {
+  source = "./modules/alb-controller"
+
+  cluster_name = module.eks.cluster_name
+
+  cluster_oidc_provider_arn = module.eks.oidc_provider_arn
+
+  vpc_id = module.vpc.vpc_id
 }
 
 # module "rds" {
