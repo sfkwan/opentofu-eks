@@ -22,3 +22,7 @@ variable "private_subnet_cidrs" {
 variable "database_subnet_cidrs" {
   type = list(string)
 }
+
+variable "eks_cluster_name" {
+  type = string
+}

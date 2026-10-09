@@ -70,7 +70,7 @@ aws ecr get-login-password \
   471112874456.dkr.ecr.us-east-1.amazonaws.com
 
 helm push \
-  aws-load-balancer-controller-1.13.0.tgz \
+  aws-load-balancer-controller-3.6.0.tgz \
   oci://471112874456.dkr.ecr.us-east-1.amazonaws.com/helm
 
 ```

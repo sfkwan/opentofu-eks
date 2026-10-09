@@ -7,6 +7,7 @@ module "vpc" {
   public_subnet_cidrs   = var.public_subnet_cidrs
   private_subnet_cidrs  = var.private_subnet_cidrs
   database_subnet_cidrs = var.db_subnet_cidrs
+  eks_cluster_name      = var.eks_cluster_name
 
   project = var.project
 }
@@ -64,6 +65,8 @@ module "alb_controller" {
   cluster_oidc_provider_arn = module.eks.oidc_provider_arn
 
   vpc_id = module.vpc.vpc_id
+
+  depends_on = [module.eks]
 }
 
 # module "rds" {
