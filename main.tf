@@ -31,10 +31,10 @@ module "security_groups" {
   db_port               = var.db_port
 }
 
-module "kubernetes_ns" {
-  source        = "./modules/k8s_ns"
-  k8s_namespace = var.k8s_namespace
-}
+# module "kubernetes_ns" {
+#   source        = "./modules/k8s_ns"
+#   k8s_namespace = var.k8s_namespace
+# }
 
 module "endpoints" {
   source = "./modules/endpoints"
@@ -46,8 +46,6 @@ module "endpoints" {
   private_route_table_ids = module.vpc.private_route_table_ids
 }
 
-
-
 module "iam_irsa" {
   source = "./modules/iam_irsa"
 
@@ -57,17 +55,39 @@ module "iam_irsa" {
   k8s_service_account = var.k8s_service_account
 }
 
-module "alb_controller" {
-  source = "./modules/alb-controller"
-
-  cluster_name = module.eks.cluster_name
-
-  cluster_oidc_provider_arn = module.eks.oidc_provider_arn
-
-  vpc_id = module.vpc.vpc_id
-
-  depends_on = [module.eks]
+module "alb" {
+  source             = "./modules/alb"
+  vpc_id             = module.vpc.vpc_id
+  private_subnet_ids = module.vpc.private_subnet_ids
+  security_group_id  = module.security_groups.alb_sg_id
 }
+
+module "apigw" {
+
+  source = "./modules/apigw"
+
+  private_subnet_ids = module.vpc.private_subnet_ids
+  security_group_id  = module.security_groups.vpc_link_sg_id
+  alb_listener_arn   = module.alb.listener_arn
+}
+
+module "k8s_na" {
+  source = "./modules/k8s_ns"
+}
+
+# module "alb_controller" {
+#   source = "./modules/alb-controller"
+
+#   cluster_name = module.eks.cluster_name
+
+#   cluster_oidc_provider_arn = module.eks.oidc_provider_arn
+
+#   vpc_id = module.vpc.vpc_id
+
+#   # depends_on = [module.eks]
+# }
+
+
 
 # module "rds" {
 #   source = "./modules/rds"
