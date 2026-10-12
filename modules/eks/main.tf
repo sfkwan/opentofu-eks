@@ -29,8 +29,8 @@ module "eks" {
           namespace = "kube-system"
         }
       ]
-
     }
+
   }
 }
 

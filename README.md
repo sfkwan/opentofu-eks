@@ -87,3 +87,9 @@ docker tag \
 docker push \
   471112874456.dkr.ecr.us-east-1.amazonaws.com/prkwan/aws-load-balancer-controller:v3.6.0
 ```
+
+## kubectl login
+
+```
+aws eks update-kubeconfig --region us-east-1 --name prkwan-eks-cluster
+```

@@ -1,7 +1,7 @@
 # Secure data bucket for workloads
 resource "aws_s3_bucket" "app_storage" {
   bucket        = "app-data-storage-${var.environment}-bucket"
-  force_destroy = true
+  force_destroy = false
 }
 
 # IAM Role mapping for Service Accounts (IRSA)
@@ -9,8 +9,9 @@ module "s3_irsa_role" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts"
   version = "~> 6.0"
 
-  name        = "eks-s3-reader-irsa-role"
-  description = "Allows Fargate pods to read to S3"
+  name          = "eks-s3-reader-irsa-role"
+  description   = "Allows Fargate pods to read to S3"
+  create_policy = false
 
   oidc_providers = {
     main = {

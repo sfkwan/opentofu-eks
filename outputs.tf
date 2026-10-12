@@ -42,9 +42,9 @@ output "oidc_provider_arn" {
   value = module.eks.oidc_provider_arn
 }
 
-output "iam_irsa" {
-  value = module.iam_irsa.iam_role_arn
-}
+# output "iam_irsa" {
+#   value = module.iam_irsa.iam_role_arn
+# }
 
 # output "k8s_namespace" {
 #   value = module.kubernetes_ns.k8s_namespace

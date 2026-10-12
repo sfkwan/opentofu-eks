@@ -19,27 +19,25 @@ provider "kubernetes" {
   }
 }
 
-data "aws_eks_cluster" "this" {
-  name = module.eks.cluster_name
+# data "aws_eks_cluster" "this" {
+#   name = module.eks.cluster_name
 
-  depends_on = [
-    module.eks
-  ]
-}
+#   depends_on = [
+#     module.eks
+#   ]
+# }
 
 data "aws_eks_cluster_auth" "this" {
   name = module.eks.cluster_name
 
-  depends_on = [
-    module.eks
-  ]
+  # depends_on = [
+  #   module.eks
+  # ]
 }
 
 data "aws_ecr_authorization_token" "helm" {}
 
-data "aws_caller_identity" "current" {
-
-}
+data "aws_caller_identity" "current" {}
 
 provider "helm" {
   kubernetes = {

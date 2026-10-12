@@ -30,6 +30,7 @@ module "vpc" {
   enable_dns_hostnames = true
 
   create_database_subnet_group = true
+  database_subnet_group_name   = "${var.environment}-${var.project}-database"
 
   public_subnet_tags = {
     "kubernetes.io/role/elb"                        = 1

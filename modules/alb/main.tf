@@ -1,7 +1,7 @@
 resource "aws_lb" "api" {
   name               = "demo-api-alb"
   load_balancer_type = "application"
-  internal           = true
+  internal           = false
   security_groups = [
     var.security_group_id
   ]
@@ -10,7 +10,7 @@ resource "aws_lb" "api" {
 }
 
 resource "aws_lb_target_group" "api" {
-  name        = "demo-api"
+  name        = "demo-api-tg"
   port        = 8080
   protocol    = "HTTP"
   target_type = "ip"
