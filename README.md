@@ -93,3 +93,10 @@ docker push \
 ```
 aws eks update-kubeconfig --region us-east-1 --name prkwan-eks-cluster
 ```
+
+## TargetGroupBinding
+```
+  rememeber to update TargetGroupBinding in helm chart
+  targetGroupARN: arn:aws:elasticloadbalancing:us-east-1:471112874456:targetgroup/demo-api-tg/4ed6e4621dd75d58
+
+```

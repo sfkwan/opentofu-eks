@@ -21,16 +21,14 @@ module "http_api" {
   }
 
   routes = {
-    "ANY /{proxy+}" = {
+    "$default" = {
       integration = {
+
         connection_type = "VPC_LINK"
-
-        vpc_link_key = "eks"
-
-        integration_type   = "HTTP_PROXY"
-        integration_method = "ANY"
-
-        integration_uri = var.alb_listener_arn
+        vpc_link_key    = "eks"
+        type            = "HTTP_PROXY"
+        method          = "ANY"
+        uri             = var.alb_listener_arn
       }
     }
   }

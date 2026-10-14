@@ -20,6 +20,7 @@ module "eks" {
 
   vpc_id             = module.vpc.vpc_id
   private_subnet_ids = module.vpc.private_subnet_ids
+  eks_sg_id = module.security_groups.eks_sg_id
 
 }
 
@@ -54,23 +55,23 @@ module "iam_irsa" {
 module "alb" {
   source             = "./modules/alb"
   vpc_id             = module.vpc.vpc_id
-  private_subnet_ids = module.vpc.public_subnet_ids
+  private_subnet_ids = module.vpc.private_subnet_ids
   security_group_id  = module.security_groups.alb_sg_id
 }
 
-# module "apigw" {
+module "apigw" {
 
-#   source = "./modules/apigw"
+  source = "./modules/apigw"
 
-#   private_subnet_ids = module.vpc.private_subnet_ids
-#   security_group_id  = module.security_groups.vpc_link_sg_id
-#   alb_listener_arn   = module.alb.listener_arn
-# }
-
-module "k8s_ns" {
-  source        = "./modules/k8s_ns"
-  k8s_namespace = var.k8s_namespace
+  private_subnet_ids = module.vpc.private_subnet_ids
+  security_group_id  = module.security_groups.vpc_link_sg_id
+  alb_listener_arn   = module.alb.listener_arn
 }
+
+# module "k8s_ns" {
+#   source        = "./modules/k8s_ns"
+#   k8s_namespace = var.k8s_namespace
+# }
 
 module "alb_controller" {
   source = "./modules/alb-controller"

@@ -1,7 +1,7 @@
 resource "aws_lb" "api" {
   name               = "demo-api-alb"
   load_balancer_type = "application"
-  internal           = false
+  internal           = true
   security_groups = [
     var.security_group_id
   ]
@@ -11,7 +11,7 @@ resource "aws_lb" "api" {
 
 resource "aws_lb_target_group" "api" {
   name        = "demo-api-tg"
-  port        = 8080
+  port        = 80
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = var.vpc_id
@@ -23,7 +23,7 @@ resource "aws_lb_target_group" "api" {
 }
 
 resource "aws_lb_listener" "http" {
-
+  
   load_balancer_arn = aws_lb.api.arn
   port              = 80
   protocol          = "HTTP"
@@ -31,4 +31,5 @@ resource "aws_lb_listener" "http" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.api.arn
   }
+  
 }

@@ -29,7 +29,7 @@ module "vpc" {
   enable_dns_support   = true
   enable_dns_hostnames = true
 
-  create_database_subnet_group = true
+  # create_database_subnet_group = false
   database_subnet_group_name   = "${var.environment}-${var.project}-database"
 
   public_subnet_tags = {

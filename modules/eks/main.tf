@@ -11,6 +11,8 @@ module "eks" {
   create_security_group      = false
   create_node_security_group = false
   enable_irsa                = true
+  security_group_id = var.eks_sg_id
+  
   addons = {
     coredns = {}
   }
@@ -18,6 +20,7 @@ module "eks" {
   fargate_profiles = {
     default = {
       name = "default"
+      security_group_ids = [var.eks_sg_id]
       selectors = [
         {
           namespace = "my-app-ns"

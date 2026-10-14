@@ -10,17 +10,17 @@ output "database_subnet_ids" {
   value = module.vpc.database_subnet_ids
 }
 
-output "rds_sg_id" {
-  value = module.security_groups.rds_sg_id
-}
-
-output "endpoint_sg_id" {
-  value = module.security_groups.endpoint_sg_id
-}
-
-# output "db_instance_endpoint" {
-#   value = module.rds.db_instance_endpoint
+# output "rds_sg_id" {
+#   value = module.security_groups.rds_sg_id
 # }
+
+# output "endpoint_sg_id" {
+#   value = module.security_groups.endpoint_sg_id
+# }
+
+# # output "db_instance_endpoint" {
+# #   value = module.rds.db_instance_endpoint
+# # }
 
 output "cluster_endpoint" {
   value = module.eks.cluster_endpoint
@@ -42,9 +42,9 @@ output "oidc_provider_arn" {
   value = module.eks.oidc_provider_arn
 }
 
-# output "iam_irsa" {
-#   value = module.iam_irsa.iam_role_arn
-# }
+output "iam_irsa" {
+  value = module.iam_irsa.iam_role_arn
+}
 
 # output "k8s_namespace" {
 #   value = module.kubernetes_ns.k8s_namespace
