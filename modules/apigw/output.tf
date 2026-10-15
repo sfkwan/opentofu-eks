@@ -5,3 +5,7 @@ output "api_endpoint" {
 output "api_id" {
   value = module.http_api.api_id
 }
+
+output "stage_arn"{
+  value = module.http_api.stage_arn
+}
