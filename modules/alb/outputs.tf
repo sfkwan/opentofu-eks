@@ -8,6 +8,9 @@ output "listener_arn" {
 
 output "dns_name" {
   value = aws_lb.api.dns_name
+  
 }
 
-
+output "alb_arn" {
+  value = aws_lb.api.arn
+}

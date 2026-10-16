@@ -68,26 +68,26 @@ module "apigw" {
   alb_listener_arn   = module.alb.listener_arn
 }
 
-# module "waf" {
+module "waf" {
 
-#   source = "./modules/waf"
-#   name = "${var.environment}-${var.project}-api"
-#   api_gateway_stage_arn = module.apigw.stage_arn
+  source = "./modules/waf"
+  name = "${var.environment}-${var.project}-api"
+  alb_arn = module.alb.alb_arn
 
-# }
+}
 
 # module "k8s_ns" {
 #   source        = "./modules/k8s_ns"
 #   k8s_namespace = var.k8s_namespace
 # }
 
-# module "alb_controller" {
-#   source = "./modules/alb-controller"
+module "alb_controller" {
+  source = "./modules/alb-controller"
 
-#   cluster_name              = module.eks.cluster_name
-#   cluster_oidc_provider_arn = module.eks.oidc_provider_arn
-#   vpc_id                    = module.vpc.vpc_id
-# }
+  cluster_name              = module.eks.cluster_name
+  cluster_oidc_provider_arn = module.eks.oidc_provider_arn
+  vpc_id                    = module.vpc.vpc_id
+}
 
 
 

@@ -4,6 +4,10 @@ variable "name" {
 
 
 
-variable "api_gateway_stage_arn" {
+# variable "api_gateway_stage_arn" {
+#   type = string
+# }
+
+variable "alb_arn" {
   type = string
 }
