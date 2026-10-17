@@ -22,32 +22,32 @@ output "database_subnet_ids" {
 # #   value = module.rds.db_instance_endpoint
 # # }
 
-output "cluster_endpoint" {
-  value = module.eks.cluster_endpoint
-}
+# output "cluster_endpoint" {
+#   value = module.eks.cluster_endpoint
+# }
 
-output "cluster_name" {
-  value = module.eks.cluster_name
-}
+# output "cluster_name" {
+#   value = module.eks.cluster_name
+# }
 
-output "configure_kubectl" {
-  value = "aws eks update-kubeconfig --region ${var.aws_region} --name ${module.eks.cluster_name}"
-}
+# output "configure_kubectl" {
+#   value = "aws eks update-kubeconfig --region ${var.aws_region} --name ${module.eks.cluster_name}"
+# }
 
-output "cluster_primary_sg_id" {
-  value = module.eks.cluster_primary_sg_id
-}
+# output "cluster_primary_sg_id" {
+#   value = module.eks.cluster_primary_sg_id
+# }
 
-output "oidc_provider_arn" {
-  value = module.eks.oidc_provider_arn
-}
+# output "oidc_provider_arn" {
+#   value = module.eks.oidc_provider_arn
+# }
 
-output "iam_irsa" {
-  value = module.iam_irsa.iam_role_arn
-}
+# output "iam_irsa" {
+#   value = module.iam_irsa.iam_role_arn
+# }
 
 output "stage_arn"{
-  value = module.apigw.stage_arn
+  value = module.apigw-rest.stage_arn
 } 
 
 # output "k8s_namespace" {

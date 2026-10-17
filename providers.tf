@@ -20,23 +20,23 @@ provider "aws" {
 # }
 
 
-data "aws_eks_cluster_auth" "this" {
-  name = module.eks.cluster_name
-}
+# data "aws_eks_cluster_auth" "this" {
+#   name = module.eks.cluster_name
+# }
 data "aws_ecr_authorization_token" "helm" {}
 data "aws_caller_identity" "current" {}
 # Used to deploy Helm chart AWS application load balancer
-provider "helm" {
-  kubernetes = {
-    host                   = module.eks.cluster_endpoint
-    cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
-    token                  = data.aws_eks_cluster_auth.this.token
-  }
-  registries = [
-    {
-      url      = "oci://${data.aws_caller_identity.current.account_id}.dkr.ecr.us-east-1.amazonaws.com"
-      username = data.aws_ecr_authorization_token.helm.user_name
-      password = data.aws_ecr_authorization_token.helm.password
-    }
-  ]
-}
+# provider "helm" {
+#   kubernetes = {
+#     host                   = module.eks.cluster_endpoint
+#     cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+#     token                  = data.aws_eks_cluster_auth.this.token
+#   }
+#   registries = [
+#     {
+#       url      = "oci://${data.aws_caller_identity.current.account_id}.dkr.ecr.us-east-1.amazonaws.com"
+#       username = data.aws_ecr_authorization_token.helm.user_name
+#       password = data.aws_ecr_authorization_token.helm.password
+#     }
+#   ]
+# }

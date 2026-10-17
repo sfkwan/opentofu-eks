@@ -17,8 +17,8 @@ variable "private_subnet_ids" {
   type = set(string)
 }
 
-variable "eks_sg_id" {
-  type = string
-}
+# variable "eks_sg_id" {
+#   type = string
+# }
 
 

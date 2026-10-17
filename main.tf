@@ -12,45 +12,45 @@ module "vpc" {
   project = var.project
 }
 
-module "eks" {
-  source = "./modules/eks"
+# module "eks" {
+#   source = "./modules/eks"
 
-  cluster_name       = var.eks_cluster_name
-  kubernetes_version = var.k8s_version
+#   cluster_name       = var.eks_cluster_name
+#   kubernetes_version = var.k8s_version
 
-  vpc_id             = module.vpc.vpc_id
-  private_subnet_ids = module.vpc.private_subnet_ids
-  eks_sg_id = module.security_groups.eks_sg_id
+#   vpc_id             = module.vpc.vpc_id
+#   private_subnet_ids = module.vpc.private_subnet_ids
+#   # eks_sg_id = module.security_groups.eks_sg_id
 
-}
+# }
 
 module "security_groups" {
   source = "./modules/security_groups"
 
   vpc_id                = module.vpc.vpc_id
-  cluster_primary_sg_id = module.eks.cluster_primary_sg_id
+  # cluster_primary_sg_id = module.eks.cluster_primary_sg_id
   db_port               = var.db_port
 }
 
 
-module "endpoints" {
-  source = "./modules/endpoints"
+# module "endpoints" {
+#   source = "./modules/endpoints"
 
-  region                  = var.aws_region
-  vpc_id                  = module.vpc.vpc_id
-  subnet_ids              = module.vpc.private_subnet_ids
-  endpoint_sg_id          = module.security_groups.endpoint_sg_id
-  private_route_table_ids = module.vpc.private_route_table_ids
-}
+#   region                  = var.aws_region
+#   vpc_id                  = module.vpc.vpc_id
+#   subnet_ids              = module.vpc.private_subnet_ids
+#   endpoint_sg_id          = module.security_groups.endpoint_sg_id
+#   private_route_table_ids = module.vpc.private_route_table_ids
+# }
 
-module "iam_irsa" {
-  source = "./modules/iam_irsa"
+# module "iam_irsa" {
+#   source = "./modules/iam_irsa"
 
-  environment         = var.environment
-  cluster_oidc_arn    = module.eks.oidc_provider_arn
-  k8s_namespace       = var.k8s_namespace
-  k8s_service_account = var.k8s_service_account
-}
+#   environment         = var.environment
+#   cluster_oidc_arn    = module.eks.oidc_provider_arn
+#   k8s_namespace       = var.k8s_namespace
+#   k8s_service_account = var.k8s_service_account
+# }
 
 module "alb" {
   source             = "./modules/alb"
@@ -59,20 +59,30 @@ module "alb" {
   security_group_id  = module.security_groups.alb_sg_id
 }
 
-module "apigw" {
+# module "apigw" {
 
-  source = "./modules/apigw"
+#   source = "./modules/apigw"
 
-  private_subnet_ids = module.vpc.private_subnet_ids
-  security_group_id  = module.security_groups.vpc_link_sg_id
-  alb_listener_arn   = module.alb.listener_arn
+#   private_subnet_ids = module.vpc.private_subnet_ids
+#   security_group_id  = module.security_groups.vpc_link_sg_id
+#   alb_listener_arn   = module.alb.listener_arn
+# }
+
+module "apigw-rest" {
+  source = "./modules/apigw-rest"
+  name = local.name
+  environment = var.environment
+  nlb_arn     = module.alb.nlb_arn
+  nlb_dns_name = module.alb.nlb_dns_name
+  app_port    = module.alb.nlb_listener_port
+
 }
 
 module "waf" {
 
   source = "./modules/waf"
-  name = "${var.environment}-${var.project}-api"
-  alb_arn = module.alb.alb_arn
+  name = "${local.name}-api"
+  alb_arn = module.apigw-rest.stage_arn
 
 }
 
@@ -81,13 +91,13 @@ module "waf" {
 #   k8s_namespace = var.k8s_namespace
 # }
 
-module "alb_controller" {
-  source = "./modules/alb-controller"
+# module "alb_controller" {
+#   source = "./modules/alb-controller"
 
-  cluster_name              = module.eks.cluster_name
-  cluster_oidc_provider_arn = module.eks.oidc_provider_arn
-  vpc_id                    = module.vpc.vpc_id
-}
+#   cluster_name              = module.eks.cluster_name
+#   cluster_oidc_provider_arn = module.eks.oidc_provider_arn
+#   vpc_id                    = module.vpc.vpc_id
+# }
 
 
 

@@ -50,37 +50,37 @@ resource "aws_vpc_security_group_ingress_rule" "vpc_link_to_alb" {
   ip_protocol = "-1"
 }
 
-resource "aws_vpc_security_group_ingress_rule" "alb_to_eks" {
+# resource "aws_vpc_security_group_ingress_rule" "alb_to_eks" {
 
 
-  security_group_id            = var.cluster_primary_sg_id
-  referenced_security_group_id = aws_security_group.alb.id
+#   security_group_id            = var.cluster_primary_sg_id
+#   referenced_security_group_id = aws_security_group.alb.id
 
-  ip_protocol = "-1"
-}
+#   ip_protocol = "-1"
+# }
 
-resource "aws_vpc_security_group_ingress_rule" "eks_to_rds" {
+# resource "aws_vpc_security_group_ingress_rule" "eks_to_rds" {
 
-  from_port = var.db_port
-  to_port   = var.db_port
+#   from_port = var.db_port
+#   to_port   = var.db_port
 
-  security_group_id            = aws_security_group.rds.id
-  referenced_security_group_id = var.cluster_primary_sg_id
+#   security_group_id            = aws_security_group.rds.id
+#   referenced_security_group_id = var.cluster_primary_sg_id
 
-  ip_protocol = "tcp"
-}
+#   ip_protocol = "tcp"
+# }
 
-resource "aws_vpc_security_group_ingress_rule" "eks_to_endpoint" {
+# resource "aws_vpc_security_group_ingress_rule" "eks_to_endpoint" {
 
-  from_port = 443
-  to_port   = 443
+#   from_port = 443
+#   to_port   = 443
 
-  security_group_id            = aws_security_group.endpoint.id
-  referenced_security_group_id = var.cluster_primary_sg_id
+#   security_group_id            = aws_security_group.endpoint.id
+#   referenced_security_group_id = var.cluster_primary_sg_id
 
-  ip_protocol = "tcp"
+#   ip_protocol = "tcp"
 
-}
+# }
 
 resource "aws_security_group" "alb" {
   name        = "alb-sg"
