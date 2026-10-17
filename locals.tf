@@ -6,4 +6,6 @@ locals {
     ManagedBy   = "Terraform"
     Terraform   = "true"
   }
+
+  name = "${var.environment}-${var.project}"
 }
